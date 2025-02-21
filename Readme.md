@@ -82,6 +82,9 @@ This will:
 - Start a PostgreSQL database
 - Create the necessary tables (`person_tracking`)
 
+Notes:
+- Wait for a few second for onnx model start running
+
 ### **4. Check Running Containers**
 
 ```bash
