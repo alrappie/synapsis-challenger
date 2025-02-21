@@ -98,6 +98,7 @@ docker ps -a
 | `/api/stats/live`    | `GET`  | Get live tracking stats      |
 | `/api/stats/` | `GET`  | Get historical tracking data |
 | `/api/config/area` | `POST`  | Create a new polygon |
+
 Example usage:
 
 ```bash
