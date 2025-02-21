@@ -52,7 +52,7 @@ This project is a **real-time person tracking system** using **YOLO, Norfair, Po
 ### **1. Clone the Repository**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git clone https://github.com/alrappie/synapsis-challenger.git
 cd YOUR_REPO
 ```
 
