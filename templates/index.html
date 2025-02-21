@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Streaming with Bounding Box</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .video-container img {
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .stats-container {
+            width: 250px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .stats-container h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        .stats-container p {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .form-container {
+            margin-top: 20px;
+            text-align: center;
+            padding: 15px;
+            background: #e9ecef;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .form-container label {
+            font-weight: bold;
+        }
+        .form-container input {
+            width: 80px;
+            margin: 5px;
+        }
+        .form-container button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background: #0056b3;
+        }
+    </style>
+    <script>
+        function fetchLiveData() {
+            fetch('/api/stats/live')
+                .then(response => response.json())
+                .then(data => {
+                    let formattedData = "";
+                    data.data.forEach(item => {
+                        formattedData += `<p>${item.event}: ${item.count}</p>`;
+                    });
+                    document.getElementById('liveData').innerHTML = formattedData;
+                })
+                .catch(error => console.error('Error fetching live data:', error));
+        }
+
+        function updateBoundingBox() {
+            let name = document.getElementById("name").value;
+            let x1 = document.getElementById("x1").value;
+            let y1 = document.getElementById("y1").value;
+            let x2 = document.getElementById("x2").value;
+            let y2 = document.getElementById("y2").value;
+            let x3 = document.getElementById("x3").value;
+            let y3 = document.getElementById("y3").value;
+            let x4 = document.getElementById("x4").value;
+            let y4 = document.getElementById("y4").value;
+
+            let polygonData = {
+                name: name,
+                polygon: [
+                    [parseInt(x1), parseInt(y1)],
+                    [parseInt(x2), parseInt(y2)],
+                    [parseInt(x3), parseInt(y3)],
+                    [parseInt(x4), parseInt(y4)]
+                ]
+            };
+
+            fetch('/api/config/area', {  // UPDATED URL
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(polygonData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert("✅ " + data.message);
+                } else {
+                    alert("⚠️ Failed to update polygon!");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("❌ Failed to update bounding box! Check console.");
+            });
+        }
+
+
+        setInterval(fetchLiveData, 5000);
+        window.onload = fetchLiveData;
+    </script>
+</head>
+<body>
+    <h1 style="text-align: center;">Live CCTV dengan Kotak Bounding Box</h1>
+    <div class="container">
+        <div class="video-container">
+            <img src="{{ url_for('video_feed') }}" width="700">
+        </div>
+        <div class="stats-container">
+            <h2>Live Data</h2>
+            <div id="liveData">Loading...</div>
+        </div>
+    </div>
+    <div style="margin-top: 20px; padding: 10px; border-radius: 10px; background: #f8f8f8; width: 100%; text-align: center;">
+        <h3>Update Bounding Box</h3>
+        <form action="javascript:void(0);" onsubmit="updateBoundingBox()" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+            <div style="margin-bottom: 10px;">
+                <label for="name">Name:</label>
+                <input type="text" id="name" required>
+            </div>
+    
+            <div style="display: flex; gap: 15px;">
+                <div>
+                    <label for="x1">x1:</label><input type="number" id="x1" required>
+                    <label for="y1">y1:</label><input type="number" id="y1" required>
+                </div>
+                <div>
+                    <label for="x2">x2:</label><input type="number" id="x2" required>
+                    <label for="y2">y2:</label><input type="number" id="y2" required>
+                </div>
+            </div>
+    
+            <div style="display: flex; gap: 15px;">
+                <div>
+                    <label for="x3">x3:</label><input type="number" id="x3" required>
+                    <label for="y3">y3:</label><input type="number" id="y3" required>
+                </div>
+                <div>
+                    <label for="x4">x4:</label><input type="number" id="x4" required>
+                    <label for="y4">y4:</label><input type="number" id="y4" required>
+                </div>
+            </div>
+    
+            <button type="submit" style="margin-top: 10px;">Update</button>
+        </form>
+    </div>
+    
+</body>
+</html>

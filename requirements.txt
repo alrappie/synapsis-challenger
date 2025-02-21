@@ -1,0 +1,8 @@
+flask
+opencv-python-headless
+ultralytics
+norfair
+psycopg2-binary
+numpy
+requests
+python-dotenv
