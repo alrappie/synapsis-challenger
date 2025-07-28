@@ -36,11 +36,11 @@ cap = cv2.VideoCapture(VIDEO_URL)
 model = YOLO('./models/yolov5nu.onnx')
 
 # Initialize Norfair Tracker
-tracker = Tracker(distance_function="euclidean", distance_threshold=90, hit_counter_max=20, past_detections_length=15)
+tracker = Tracker(distance_function="mean_euclidean", distance_threshold=90, hit_counter_max=20, past_detections_length=15)
 
 # Define the polygon (ROI)
 # polygon_points = np.array([(1200, 800), (600, 800), (600, 600), (1200, 600)], dtype=np.int32) for another URL
-polygon_points = np.array([(1200, 150), (700, 150), (700, 300), (1200, 300)], dtype=np.int32)
+polygon_points = np.array([(700, 700), (1200, 1000), (1200, 700), (700, 500)], dtype=np.int32)
 polygon_name = 'default'
 
 # Dictionary to track person states
