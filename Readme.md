@@ -102,6 +102,10 @@ docker ps -a
 | `/api/stats/` | `GET`  | Get historical tracking data |
 | `/api/config/area` | `POST`  | Create a new polygon |
 
+
+live link: http://localhost:5000/
+
+
 Example usage:
 
 ```bash
